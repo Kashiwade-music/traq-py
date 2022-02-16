@@ -23,7 +23,7 @@ python3 -m pip install --upgrade build
 python3 -m build
 
 # Upload
-if [ $TEST ]; then
+if "${TEST}"; then
   TARGET=testpypi
 else
   TARGET=pypi
