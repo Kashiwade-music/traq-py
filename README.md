@@ -14,7 +14,20 @@ traQ v3 API library for Python >= 3.6.
 
 ## Usage
 
-See [./out/README.md](./out/README.md)
+A quick example of posting message to a channel:
+```python
+from traq import ApiClient, Configuration
+from traq.api.message_api import MessageApi
+from traq.model.post_message_request import PostMessageRequest
+
+if __name__ == '__main__':
+    client = ApiClient(Configuration(access_token="your-access-token"))
+    m_api = MessageApi(client)
+    message = m_api.post_message("channel-id", post_message_request=PostMessageRequest("おいす〜"))
+    print(message)
+```
+
+For more, see [./out/README.md](./out/README.md)
 
 ## References
 
