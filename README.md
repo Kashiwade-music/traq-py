@@ -5,7 +5,7 @@ traQ v3 API library for Python >= 3.6.
 ## Generation
 
 ```shell
-PACKAGE_VERSION=3.0.0-0 ./generate.sh
+./generate.sh 3.0.0-0
 # Configure PyPI account and ~/.pypirc
 ./upload.sh
 ```

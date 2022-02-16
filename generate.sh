@@ -2,7 +2,13 @@
 
 set -eux
 
-PACKAGE_VERSION="${PACKAGE_VERSION:=3.0.0-0}"
+if ! [ $# -eq 1 ]; then
+    echo "Usage: ./generate.sh PACKAGE_VERSION"
+    echo "e.g. ./generate.sh 3.0.0-0"
+    exit 1
+fi
+
+PACKAGE_VERSION=$1
 
 # clean
 if [ -d ./out ]; then
