@@ -2,7 +2,7 @@
 
 set -eux
 
-PACKAGE_VERSION="${PACKAGE_VERSION:=3.0.0}"
+PACKAGE_VERSION="${PACKAGE_VERSION:=3.0.0-0}"
 
 # clean
 if [ -d ./out ]; then
