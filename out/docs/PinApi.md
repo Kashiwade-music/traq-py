@@ -20,13 +20,16 @@ Method | HTTP request | Description
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import pin_api
-from traq.model.message_pin import MessagePin
+from traq.models.message_pin import MessagePin
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -38,33 +41,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = pin_api.PinApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.PinApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # ピン留めする
         api_response = api_instance.create_pin(message_id)
+        print("The response of PinApi->create_pin:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling PinApi->create_pin: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
@@ -72,13 +78,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -91,7 +96,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_channel_pins**
-> [Pin] get_channel_pins(channel_id)
+> List[Pin] get_channel_pins(channel_id)
 
 チャンネルピンのリストを取得
 
@@ -100,13 +105,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import pin_api
-from traq.model.pin import Pin
+from traq.models.pin import Pin
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -118,47 +126,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = pin_api.PinApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
+    api_instance = traq.PinApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # チャンネルピンのリストを取得
         api_response = api_instance.get_channel_pins(channel_id)
+        print("The response of PinApi->get_channel_pins:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling PinApi->get_channel_pins: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
+ **channel_id** | **str**| チャンネルUUID | 
 
 ### Return type
 
-[**[Pin]**](Pin.md)
+[**List[Pin]**](Pin.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -179,13 +189,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import pin_api
-from traq.model.message_pin import MessagePin
+from traq.models.message_pin import MessagePin
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -197,33 +210,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = pin_api.PinApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.PinApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # ピン留めを取得
         api_response = api_instance.get_pin(message_id)
+        print("The response of PinApi->get_pin:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling PinApi->get_pin: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
@@ -231,13 +247,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -258,12 +273,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import pin_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -275,32 +293,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = pin_api.PinApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.PinApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # ピン留めを外す
         api_instance.remove_pin(message_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling PinApi->remove_pin: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
@@ -308,13 +328,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

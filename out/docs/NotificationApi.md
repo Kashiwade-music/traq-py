@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **edit_channel_subscribers**
-> edit_channel_subscribers(channel_id)
+> edit_channel_subscribers(channel_id, patch_channel_subscribers_request=patch_channel_subscribers_request)
 
 チャンネルの通知購読者を編集
 
@@ -26,13 +26,16 @@ Method | HTTP request | Description
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.patch_channel_subscribers_request import PatchChannelSubscribersRequest
+from traq.models.patch_channel_subscribers_request import PatchChannelSubscribersRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -44,49 +47,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
-    patch_channel_subscribers_request = PatchChannelSubscribersRequest(
-        on=[
-            "on_example",
-        ],
-        off=[
-            "off_example",
-        ],
-    ) # PatchChannelSubscribersRequest |  (optional)
+    api_instance = traq.NotificationApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
+    patch_channel_subscribers_request = traq.PatchChannelSubscribersRequest() # PatchChannelSubscribersRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # チャンネルの通知購読者を編集
-        api_instance.edit_channel_subscribers(channel_id)
-    except traq.ApiException as e:
-        print("Exception when calling NotificationApi->edit_channel_subscribers: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # チャンネルの通知購読者を編集
         api_instance.edit_channel_subscribers(channel_id, patch_channel_subscribers_request=patch_channel_subscribers_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->edit_channel_subscribers: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
- **patch_channel_subscribers_request** | [**PatchChannelSubscribersRequest**](PatchChannelSubscribersRequest.md)|  | [optional]
+ **channel_id** | **str**| チャンネルUUID | 
+ **patch_channel_subscribers_request** | [**PatchChannelSubscribersRequest**](PatchChannelSubscribersRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -94,13 +84,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -114,7 +103,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_channel_subscribers**
-> [str] get_channel_subscribers(channel_id)
+> List[str] get_channel_subscribers(channel_id)
 
 チャンネルの通知購読者のリストを取得
 
@@ -123,12 +112,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -140,47 +132,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
+    api_instance = traq.NotificationApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # チャンネルの通知購読者のリストを取得
         api_response = api_instance.get_channel_subscribers(channel_id)
+        print("The response of NotificationApi->get_channel_subscribers:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->get_channel_subscribers: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
+ **channel_id** | **str**| チャンネルUUID | 
 
 ### Return type
 
-**[str]**
+**List[str]**
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -193,7 +187,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_channel_subscriptions**
-> [UserSubscribeState] get_my_channel_subscriptions()
+> List[UserSubscribeState] get_my_channel_subscriptions()
 
 自分のチャンネル購読状態を取得
 
@@ -202,13 +196,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.user_subscribe_state import UserSubscribeState
+from traq.models.user_subscribe_state import UserSubscribeState
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -220,43 +217,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
+    api_instance = traq.NotificationApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # 自分のチャンネル購読状態を取得
         api_response = api_instance.get_my_channel_subscriptions()
+        print("The response of NotificationApi->get_my_channel_subscriptions:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->get_my_channel_subscriptions: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[UserSubscribeState]**](UserSubscribeState.md)
+[**List[UserSubscribeState]**](UserSubscribeState.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -267,7 +266,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_unread_channels**
-> [UnreadChannel] get_my_unread_channels()
+> List[UnreadChannel] get_my_unread_channels()
 
 未読チャンネルを取得
 
@@ -276,13 +275,16 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.unread_channel import UnreadChannel
+from traq.models.unread_channel import UnreadChannel
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -294,43 +296,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
+    api_instance = traq.NotificationApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # 未読チャンネルを取得
         api_response = api_instance.get_my_unread_channels()
+        print("The response of NotificationApi->get_my_unread_channels:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->get_my_unread_channels: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[UnreadChannel]**](UnreadChannel.md)
+[**List[UnreadChannel]**](UnreadChannel.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -341,7 +345,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_view_states**
-> [MyChannelViewState] get_my_view_states()
+> List[MyChannelViewState] get_my_view_states()
 
 自身のチャンネル閲覧状態一覧を取得
 
@@ -350,13 +354,16 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.my_channel_view_state import MyChannelViewState
+from traq.models.my_channel_view_state import MyChannelViewState
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -368,43 +375,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
+    api_instance = traq.NotificationApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # 自身のチャンネル閲覧状態一覧を取得
         api_response = api_instance.get_my_view_states()
+        print("The response of NotificationApi->get_my_view_states:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->get_my_view_states: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[MyChannelViewState]**](MyChannelViewState.md)
+[**List[MyChannelViewState]**](MyChannelViewState.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -424,12 +433,15 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -441,32 +453,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
+    api_instance = traq.NotificationApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # チャンネルを既読にする
         api_instance.read_channel(channel_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->read_channel: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
+ **channel_id** | **str**| チャンネルUUID | 
 
 ### Return type
 
@@ -474,13 +488,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -491,7 +504,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **register_fcm_device**
-> register_fcm_device()
+> register_fcm_device(post_my_fcm_device_request=post_my_fcm_device_request)
 
 FCMデバイスを登録
 
@@ -500,13 +513,16 @@ FCMデバイスを登録
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.post_my_fcm_device_request import PostMyFCMDeviceRequest
+from traq.models.post_my_fcm_device_request import PostMyFCMDeviceRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -518,35 +534,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    post_my_fcm_device_request = PostMyFCMDeviceRequest(
-        token="bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1",
-    ) # PostMyFCMDeviceRequest |  (optional)
+    api_instance = traq.NotificationApi(api_client)
+    post_my_fcm_device_request = traq.PostMyFCMDeviceRequest() # PostMyFCMDeviceRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # FCMデバイスを登録
         api_instance.register_fcm_device(post_my_fcm_device_request=post_my_fcm_device_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->register_fcm_device: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_my_fcm_device_request** | [**PostMyFCMDeviceRequest**](PostMyFCMDeviceRequest.md)|  | [optional]
+ **post_my_fcm_device_request** | [**PostMyFCMDeviceRequest**](PostMyFCMDeviceRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -554,13 +569,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -572,7 +586,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **set_channel_subscribe_level**
-> set_channel_subscribe_level(channel_id)
+> set_channel_subscribe_level(channel_id, put_channel_subscribe_level_request=put_channel_subscribe_level_request)
 
 チャンネル購読レベルを設定
 
@@ -581,13 +595,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.put_channel_subscribe_level_request import PutChannelSubscribeLevelRequest
+from traq.models.put_channel_subscribe_level_request import PutChannelSubscribeLevelRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -599,44 +616,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
-    put_channel_subscribe_level_request = PutChannelSubscribeLevelRequest(
-        level=ChannelSubscribeLevel(0),
-    ) # PutChannelSubscribeLevelRequest |  (optional)
+    api_instance = traq.NotificationApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
+    put_channel_subscribe_level_request = traq.PutChannelSubscribeLevelRequest() # PutChannelSubscribeLevelRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # チャンネル購読レベルを設定
-        api_instance.set_channel_subscribe_level(channel_id)
-    except traq.ApiException as e:
-        print("Exception when calling NotificationApi->set_channel_subscribe_level: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # チャンネル購読レベルを設定
         api_instance.set_channel_subscribe_level(channel_id, put_channel_subscribe_level_request=put_channel_subscribe_level_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->set_channel_subscribe_level: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
- **put_channel_subscribe_level_request** | [**PutChannelSubscribeLevelRequest**](PutChannelSubscribeLevelRequest.md)|  | [optional]
+ **channel_id** | **str**| チャンネルUUID | 
+ **put_channel_subscribe_level_request** | [**PutChannelSubscribeLevelRequest**](PutChannelSubscribeLevelRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -644,13 +653,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -664,7 +672,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **set_channel_subscribers**
-> set_channel_subscribers(channel_id)
+> set_channel_subscribers(channel_id, put_channel_subscribers_request=put_channel_subscribers_request)
 
 チャンネルの通知購読者を設定
 
@@ -673,13 +681,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
-from traq.model.put_channel_subscribers_request import PutChannelSubscribersRequest
+from traq.models.put_channel_subscribers_request import PutChannelSubscribersRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -691,46 +702,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
-    put_channel_subscribers_request = PutChannelSubscribersRequest(
-        on=[
-            "on_example",
-        ],
-    ) # PutChannelSubscribersRequest |  (optional)
+    api_instance = traq.NotificationApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
+    put_channel_subscribers_request = traq.PutChannelSubscribersRequest() # PutChannelSubscribersRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # チャンネルの通知購読者を設定
-        api_instance.set_channel_subscribers(channel_id)
-    except traq.ApiException as e:
-        print("Exception when calling NotificationApi->set_channel_subscribers: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # チャンネルの通知購読者を設定
         api_instance.set_channel_subscribers(channel_id, put_channel_subscribers_request=put_channel_subscribers_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->set_channel_subscribers: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
- **put_channel_subscribers_request** | [**PutChannelSubscribersRequest**](PutChannelSubscribersRequest.md)|  | [optional]
+ **channel_id** | **str**| チャンネルUUID | 
+ **put_channel_subscribers_request** | [**PutChannelSubscribersRequest**](PutChannelSubscribersRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -738,13 +739,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -767,12 +767,15 @@ WebSocket通知ストリームに接続します
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import notification_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -784,27 +787,29 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = notification_api.NotificationApi(api_client)
+    api_instance = traq.NotificationApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # WebSocket通知ストリームに接続します
         api_instance.ws()
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling NotificationApi->ws: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -813,13 +818,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

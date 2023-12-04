@@ -10,22 +10,25 @@ Method | HTTP request | Description
 
 
 # **add_my_star**
-> add_my_star()
+> add_my_star(post_star_request=post_star_request)
 
 チャンネルをスターに追加
 
-指定したチャンネルをスターチャンネルに追加します。 不正なチャンネルIDを指定した場合、400を返します。
+指定したチャンネルをスターチャンネルに追加します。 スター済みのチャンネルIDを指定した場合、204を返します。 不正なチャンネルIDを指定した場合、400を返します。
 
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import star_api
-from traq.model.post_star_request import PostStarRequest
+from traq.models.post_star_request import PostStarRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -37,35 +40,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = star_api.StarApi(api_client)
-    post_star_request = PostStarRequest(
-        channel_id="channel_id_example",
-    ) # PostStarRequest |  (optional)
+    api_instance = traq.StarApi(api_client)
+    post_star_request = traq.PostStarRequest() # PostStarRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # チャンネルをスターに追加
         api_instance.add_my_star(post_star_request=post_star_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StarApi->add_my_star: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_star_request** | [**PostStarRequest**](PostStarRequest.md)|  | [optional]
+ **post_star_request** | [**PostStarRequest**](PostStarRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -73,13 +75,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -91,7 +92,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_stars**
-> [str] get_my_stars()
+> List[str] get_my_stars()
 
 スターチャンネルリストを取得
 
@@ -100,12 +101,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import star_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -117,43 +121,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = star_api.StarApi(api_client)
+    api_instance = traq.StarApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # スターチャンネルリストを取得
         api_response = api_instance.get_my_stars()
+        print("The response of StarApi->get_my_stars:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StarApi->get_my_stars: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-**[str]**
+**List[str]**
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -173,12 +179,15 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import star_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -190,32 +199,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = star_api.StarApi(api_client)
-    channel_id = "channelId_example" # str | チャンネルUUID
+    api_instance = traq.StarApi(api_client)
+    channel_id = 'channel_id_example' # str | チャンネルUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # チャンネルをスターから削除します
         api_instance.remove_my_star(channel_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StarApi->remove_my_star: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **channel_id** | **str**| チャンネルUUID |
+ **channel_id** | **str**| チャンネルUUID | 
 
 ### Return type
 
@@ -223,13 +234,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

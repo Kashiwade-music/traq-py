@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 
 # **clip_message**
-> ClippedMessage clip_message(folder_id)
+> ClippedMessage clip_message(folder_id, post_clip_folder_message_request=post_clip_folder_message_request)
 
 メッセージをクリップフォルダに追加
 
@@ -25,14 +25,17 @@ Method | HTTP request | Description
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.clipped_message import ClippedMessage
-from traq.model.post_clip_folder_message_request import PostClipFolderMessageRequest
+from traq.models.clipped_message import ClippedMessage
+from traq.models.post_clip_folder_message_request import PostClipFolderMessageRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -44,46 +47,38 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
-    post_clip_folder_message_request = PostClipFolderMessageRequest(
-        message_id="message_id_example",
-    ) # PostClipFolderMessageRequest |  (optional)
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
+    post_clip_folder_message_request = traq.PostClipFolderMessageRequest() # PostClipFolderMessageRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # メッセージをクリップフォルダに追加
-        api_response = api_instance.clip_message(folder_id)
-        pprint(api_response)
-    except traq.ApiException as e:
-        print("Exception when calling ClipApi->clip_message: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # メッセージをクリップフォルダに追加
         api_response = api_instance.clip_message(folder_id, post_clip_folder_message_request=post_clip_folder_message_request)
+        print("The response of ClipApi->clip_message:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->clip_message: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
- **post_clip_folder_message_request** | [**PostClipFolderMessageRequest**](PostClipFolderMessageRequest.md)|  | [optional]
+ **folder_id** | **str**| クリップフォルダUUID | 
+ **post_clip_folder_message_request** | [**PostClipFolderMessageRequest**](PostClipFolderMessageRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -91,13 +86,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -111,7 +105,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_clip_folder**
-> ClipFolder create_clip_folder()
+> ClipFolder create_clip_folder(post_clip_folder_request=post_clip_folder_request)
 
 クリップフォルダを作成
 
@@ -120,14 +114,17 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.clip_folder import ClipFolder
-from traq.model.post_clip_folder_request import PostClipFolderRequest
+from traq.models.clip_folder import ClipFolder
+from traq.models.post_clip_folder_request import PostClipFolderRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -139,37 +136,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    post_clip_folder_request = PostClipFolderRequest(
-        name="name_example",
-        description="description_example",
-    ) # PostClipFolderRequest |  (optional)
+    api_instance = traq.ClipApi(api_client)
+    post_clip_folder_request = traq.PostClipFolderRequest() # PostClipFolderRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # クリップフォルダを作成
         api_response = api_instance.create_clip_folder(post_clip_folder_request=post_clip_folder_request)
+        print("The response of ClipApi->create_clip_folder:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->create_clip_folder: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_clip_folder_request** | [**PostClipFolderRequest**](PostClipFolderRequest.md)|  | [optional]
+ **post_clip_folder_request** | [**PostClipFolderRequest**](PostClipFolderRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -177,13 +173,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -204,12 +199,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -221,32 +219,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # クリップフォルダを削除
         api_instance.delete_clip_folder(folder_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->delete_clip_folder: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
+ **folder_id** | **str**| クリップフォルダUUID | 
 
 ### Return type
 
@@ -254,13 +254,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -272,7 +271,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_clip_folder**
-> edit_clip_folder(folder_id)
+> edit_clip_folder(folder_id, patch_clip_folder_request=patch_clip_folder_request)
 
 クリップフォルダ情報を編集
 
@@ -281,13 +280,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.patch_clip_folder_request import PatchClipFolderRequest
+from traq.models.patch_clip_folder_request import PatchClipFolderRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -299,45 +301,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
-    patch_clip_folder_request = PatchClipFolderRequest(
-        name="name_example",
-        description="description_example",
-    ) # PatchClipFolderRequest |  (optional)
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
+    patch_clip_folder_request = traq.PatchClipFolderRequest() # PatchClipFolderRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # クリップフォルダ情報を編集
-        api_instance.edit_clip_folder(folder_id)
-    except traq.ApiException as e:
-        print("Exception when calling ClipApi->edit_clip_folder: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # クリップフォルダ情報を編集
         api_instance.edit_clip_folder(folder_id, patch_clip_folder_request=patch_clip_folder_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->edit_clip_folder: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
- **patch_clip_folder_request** | [**PatchClipFolderRequest**](PatchClipFolderRequest.md)|  | [optional]
+ **folder_id** | **str**| クリップフォルダUUID | 
+ **patch_clip_folder_request** | [**PatchClipFolderRequest**](PatchClipFolderRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -345,13 +338,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -373,13 +365,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.clip_folder import ClipFolder
+from traq.models.clip_folder import ClipFolder
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -391,33 +386,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # クリップフォルダ情報を取得
         api_response = api_instance.get_clip_folder(folder_id)
+        print("The response of ClipApi->get_clip_folder:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->get_clip_folder: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
+ **folder_id** | **str**| クリップフォルダUUID | 
 
 ### Return type
 
@@ -425,13 +423,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -443,7 +440,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_clip_folders**
-> [ClipFolder] get_clip_folders()
+> List[ClipFolder] get_clip_folders()
 
 クリップフォルダのリストを取得
 
@@ -452,13 +449,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.clip_folder import ClipFolder
+from traq.models.clip_folder import ClipFolder
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -470,43 +470,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
+    api_instance = traq.ClipApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # クリップフォルダのリストを取得
         api_response = api_instance.get_clip_folders()
+        print("The response of ClipApi->get_clip_folders:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->get_clip_folders: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[ClipFolder]**](ClipFolder.md)
+[**List[ClipFolder]**](ClipFolder.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -517,7 +519,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_clips**
-> [ClippedMessage] get_clips(folder_id)
+> List[ClippedMessage] get_clips(folder_id, limit=limit, offset=offset, order=order)
 
 フォルダ内のクリップのリストを取得
 
@@ -526,13 +528,16 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.clipped_message import ClippedMessage
+from traq.models.clipped_message import ClippedMessage
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -544,62 +549,55 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
     limit = 50 # int | 取得する件数 (optional)
-    offset = 150 # int | 取得するオフセット (optional) if omitted the server will use the default value of 0
-    order = "desc" # str | 昇順か降順か (optional) if omitted the server will use the default value of "desc"
+    offset = 0 # int | 取得するオフセット (optional) (default to 0)
+    order = 'desc' # str | 昇順か降順か (optional) (default to 'desc')
 
-    # example passing only required values which don't have defaults set
-    try:
-        # フォルダ内のクリップのリストを取得
-        api_response = api_instance.get_clips(folder_id)
-        pprint(api_response)
-    except traq.ApiException as e:
-        print("Exception when calling ClipApi->get_clips: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # フォルダ内のクリップのリストを取得
         api_response = api_instance.get_clips(folder_id, limit=limit, offset=offset, order=order)
+        print("The response of ClipApi->get_clips:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->get_clips: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
- **limit** | **int**| 取得する件数 | [optional]
- **offset** | **int**| 取得するオフセット | [optional] if omitted the server will use the default value of 0
- **order** | **str**| 昇順か降順か | [optional] if omitted the server will use the default value of "desc"
+ **folder_id** | **str**| クリップフォルダUUID | 
+ **limit** | **int**| 取得する件数 | [optional] 
+ **offset** | **int**| 取得するオフセット | [optional] [default to 0]
+ **order** | **str**| 昇順か降順か | [optional] [default to &#39;desc&#39;]
 
 ### Return type
 
-[**[ClippedMessage]**](ClippedMessage.md)
+[**List[ClippedMessage]**](ClippedMessage.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -611,7 +609,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_message_clips**
-> [MessageClip] get_message_clips(message_id)
+> List[MessageClip] get_message_clips(message_id)
 
 自分のクリップを取得
 
@@ -620,13 +618,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
-from traq.model.message_clip import MessageClip
+from traq.models.message_clip import MessageClip
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -638,47 +639,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.ClipApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # 自分のクリップを取得
         api_response = api_instance.get_message_clips(message_id)
+        print("The response of ClipApi->get_message_clips:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->get_message_clips: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
-[**[MessageClip]**](MessageClip.md)
+[**List[MessageClip]**](MessageClip.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -699,12 +702,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import clip_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -716,34 +722,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = clip_api.ClipApi(api_client)
-    folder_id = "folderId_example" # str | クリップフォルダUUID
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.ClipApi(api_client)
+    folder_id = 'folder_id_example' # str | クリップフォルダUUID
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # メッセージをクリップフォルダから除外
         api_instance.unclip_message(folder_id, message_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling ClipApi->unclip_message: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **folder_id** | **str**| クリップフォルダUUID |
- **message_id** | **str**| メッセージUUID |
+ **folder_id** | **str**| クリップフォルダUUID | 
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
@@ -751,13 +759,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

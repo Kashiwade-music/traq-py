@@ -19,7 +19,7 @@ Method | HTTP request | Description
 
 
 # **create_client**
-> OAuth2ClientDetail create_client()
+> OAuth2ClientDetail create_client(post_client_request=post_client_request)
 
 OAuth2クライアントを作成
 
@@ -28,14 +28,17 @@ OAuth2クライアントを作成します。
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.post_client_request import PostClientRequest
-from traq.model.o_auth2_client_detail import OAuth2ClientDetail
+from traq.models.o_auth2_client_detail import OAuth2ClientDetail
+from traq.models.post_client_request import PostClientRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -47,41 +50,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    post_client_request = PostClientRequest(
-        name="name_example",
-        callback_url="callback_url_example",
-        scopes=[
-            OAuth2Scope("read"),
-        ],
-        description="description_example",
-    ) # PostClientRequest |  (optional)
+    api_instance = traq.Oauth2Api(api_client)
+    post_client_request = traq.PostClientRequest() # PostClientRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2クライアントを作成
         api_response = api_instance.create_client(post_client_request=post_client_request)
+        print("The response of Oauth2Api->create_client:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->create_client: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_client_request** | [**PostClientRequest**](PostClientRequest.md)|  | [optional]
+ **post_client_request** | [**PostClientRequest**](PostClientRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -89,13 +87,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -116,12 +113,15 @@ OAuth2クライアントを削除
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -133,32 +133,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    client_id = "clientId_example" # str | OAuth2クライアントUUID
+    api_instance = traq.Oauth2Api(api_client)
+    client_id = 'client_id_example' # str | OAuth2クライアントUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # OAuth2クライアントを削除
         api_instance.delete_client(client_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->delete_client: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **client_id** | **str**| OAuth2クライアントUUID |
+ **client_id** | **str**| OAuth2クライアントUUID | 
 
 ### Return type
 
@@ -166,13 +168,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -185,7 +186,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_client**
-> edit_client(client_id)
+> edit_client(client_id, patch_client_request=patch_client_request)
 
 OAuth2クライアント情報を変更
 
@@ -194,13 +195,16 @@ OAuth2クライアント情報を変更
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.patch_client_request import PatchClientRequest
+from traq.models.patch_client_request import PatchClientRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -212,47 +216,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    client_id = "clientId_example" # str | OAuth2クライアントUUID
-    patch_client_request = PatchClientRequest(
-        name="name_example",
-        description="description_example",
-        callback_url="callback_url_example",
-        developer_id="developer_id_example",
-    ) # PatchClientRequest |  (optional)
+    api_instance = traq.Oauth2Api(api_client)
+    client_id = 'client_id_example' # str | OAuth2クライアントUUID
+    patch_client_request = traq.PatchClientRequest() # PatchClientRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # OAuth2クライアント情報を変更
-        api_instance.edit_client(client_id)
-    except traq.ApiException as e:
-        print("Exception when calling Oauth2Api->edit_client: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2クライアント情報を変更
         api_instance.edit_client(client_id, patch_client_request=patch_client_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->edit_client: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **client_id** | **str**| OAuth2クライアントUUID |
- **patch_client_request** | [**PatchClientRequest**](PatchClientRequest.md)|  | [optional]
+ **client_id** | **str**| OAuth2クライアントUUID | 
+ **patch_client_request** | [**PatchClientRequest**](PatchClientRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -260,13 +253,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -280,7 +272,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_client**
-> bool, date, datetime, dict, float, int, list, str, none_type get_client(client_id)
+> GetClient200Response get_client(client_id, detail=detail)
 
 OAuth2クライアント情報を取得
 
@@ -289,14 +281,16 @@ OAuth2クライアント情報を取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.o_auth2_client import OAuth2Client
-from traq.model.o_auth2_client_detail import OAuth2ClientDetail
+from traq.models.get_client200_response import GetClient200Response
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -308,58 +302,51 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    client_id = "clientId_example" # str | OAuth2クライアントUUID
-    detail = False # bool | 詳細情報を含めるかどうか (optional) if omitted the server will use the default value of False
+    api_instance = traq.Oauth2Api(api_client)
+    client_id = 'client_id_example' # str | OAuth2クライアントUUID
+    detail = False # bool | 詳細情報を含めるかどうか (optional) (default to False)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # OAuth2クライアント情報を取得
-        api_response = api_instance.get_client(client_id)
-        pprint(api_response)
-    except traq.ApiException as e:
-        print("Exception when calling Oauth2Api->get_client: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2クライアント情報を取得
         api_response = api_instance.get_client(client_id, detail=detail)
+        print("The response of Oauth2Api->get_client:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->get_client: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **client_id** | **str**| OAuth2クライアントUUID |
- **detail** | **bool**| 詳細情報を含めるかどうか | [optional] if omitted the server will use the default value of False
+ **client_id** | **str**| OAuth2クライアントUUID | 
+ **detail** | **bool**| 詳細情報を含めるかどうか | [optional] [default to False]
 
 ### Return type
 
-**bool, date, datetime, dict, float, int, list, str, none_type**
+[**GetClient200Response**](GetClient200Response.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -372,7 +359,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_clients**
-> [OAuth2Client] get_clients()
+> List[OAuth2Client] get_clients(all=all)
 
 OAuth2クライアントのリストを取得
 
@@ -381,13 +368,16 @@ OAuth2クライアントのリストを取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.o_auth2_client import OAuth2Client
+from traq.models.o_auth2_client import OAuth2Client
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -399,48 +389,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    all = False # bool | 全てのクライアントを取得するかどうか (optional) if omitted the server will use the default value of False
+    api_instance = traq.Oauth2Api(api_client)
+    all = False # bool | 全てのクライアントを取得するかどうか (optional) (default to False)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2クライアントのリストを取得
         api_response = api_instance.get_clients(all=all)
+        print("The response of Oauth2Api->get_clients:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->get_clients: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **all** | **bool**| 全てのクライアントを取得するかどうか | [optional] if omitted the server will use the default value of False
+ **all** | **bool**| 全てのクライアントを取得するかどうか | [optional] [default to False]
 
 ### Return type
 
-[**[OAuth2Client]**](OAuth2Client.md)
+[**List[OAuth2Client]**](OAuth2Client.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -451,7 +442,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_tokens**
-> [ActiveOAuth2Token] get_my_tokens()
+> List[ActiveOAuth2Token] get_my_tokens()
 
 有効トークンのリストを取得
 
@@ -460,13 +451,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.active_o_auth2_token import ActiveOAuth2Token
+from traq.models.active_o_auth2_token import ActiveOAuth2Token
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -478,43 +472,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
+    api_instance = traq.Oauth2Api(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # 有効トークンのリストを取得
         api_response = api_instance.get_my_tokens()
+        print("The response of Oauth2Api->get_my_tokens:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->get_my_tokens: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[ActiveOAuth2Token]**](ActiveOAuth2Token.md)
+[**List[ActiveOAuth2Token]**](ActiveOAuth2Token.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -525,7 +521,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_o_auth2_authorize**
-> get_o_auth2_authorize(client_id)
+> get_o_auth2_authorize(client_id, response_type=response_type, redirect_uri=redirect_uri, scope=scope, state=state, code_challenge=code_challenge, code_challenge_method=code_challenge_method, nonce=nonce, prompt=prompt)
 
 OAuth2 認可エンドポイント
 
@@ -534,14 +530,17 @@ OAuth2 認可エンドポイント
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.o_auth2_prompt import OAuth2Prompt
-from traq.model.o_auth2_response_type import OAuth2ResponseType
+from traq.models.o_auth2_prompt import OAuth2Prompt
+from traq.models.o_auth2_response_type import OAuth2ResponseType
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -553,56 +552,50 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    client_id = "client_id_example" # str | 
-    response_type = OAuth2ResponseType("code") # OAuth2ResponseType |  (optional)
-    redirect_uri = "redirect_uri_example" # str |  (optional)
-    scope = "scope_example" # str |  (optional)
-    state = "state_example" # str |  (optional)
-    code_challenge = "code_challenge_example" # str |  (optional)
-    code_challenge_method = "code_challenge_method_example" # str |  (optional)
-    nonce = "nonce_example" # str |  (optional)
-    prompt = OAuth2Prompt("none") # OAuth2Prompt |  (optional)
+    api_instance = traq.Oauth2Api(api_client)
+    client_id = 'client_id_example' # str | 
+    response_type = traq.OAuth2ResponseType() # OAuth2ResponseType |  (optional)
+    redirect_uri = 'redirect_uri_example' # str |  (optional)
+    scope = 'scope_example' # str |  (optional)
+    state = 'state_example' # str |  (optional)
+    code_challenge = 'code_challenge_example' # str |  (optional)
+    code_challenge_method = 'code_challenge_method_example' # str |  (optional)
+    nonce = 'nonce_example' # str |  (optional)
+    prompt = traq.OAuth2Prompt() # OAuth2Prompt |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # OAuth2 認可エンドポイント
-        api_instance.get_o_auth2_authorize(client_id)
-    except traq.ApiException as e:
-        print("Exception when calling Oauth2Api->get_o_auth2_authorize: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2 認可エンドポイント
         api_instance.get_o_auth2_authorize(client_id, response_type=response_type, redirect_uri=redirect_uri, scope=scope, state=state, code_challenge=code_challenge, code_challenge_method=code_challenge_method, nonce=nonce, prompt=prompt)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->get_o_auth2_authorize: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **client_id** | **str**|  |
- **response_type** | **OAuth2ResponseType**|  | [optional]
- **redirect_uri** | **str**|  | [optional]
- **scope** | **str**|  | [optional]
- **state** | **str**|  | [optional]
- **code_challenge** | **str**|  | [optional]
- **code_challenge_method** | **str**|  | [optional]
- **nonce** | **str**|  | [optional]
- **prompt** | **OAuth2Prompt**|  | [optional]
+ **client_id** | **str**|  | 
+ **response_type** | [**OAuth2ResponseType**](.md)|  | [optional] 
+ **redirect_uri** | **str**|  | [optional] 
+ **scope** | **str**|  | [optional] 
+ **state** | **str**|  | [optional] 
+ **code_challenge** | **str**|  | [optional] 
+ **code_challenge_method** | **str**|  | [optional] 
+ **nonce** | **str**|  | [optional] 
+ **prompt** | [**OAuth2Prompt**](.md)|  | [optional] 
 
 ### Return type
 
@@ -610,13 +603,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -629,7 +621,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **post_o_auth2_authorize**
-> post_o_auth2_authorize(client_id)
+> post_o_auth2_authorize(client_id, response_type=response_type, redirect_uri=redirect_uri, scope=scope, state=state, code_challenge=code_challenge, code_challenge_method=code_challenge_method, nonce=nonce, prompt=prompt)
 
 OAuth2 認可エンドポイント
 
@@ -638,14 +630,17 @@ OAuth2 認可エンドポイント
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.o_auth2_prompt import OAuth2Prompt
-from traq.model.o_auth2_response_type import OAuth2ResponseType
+from traq.models.o_auth2_prompt import OAuth2Prompt
+from traq.models.o_auth2_response_type import OAuth2ResponseType
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -657,56 +652,50 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    client_id = "client_id_example" # str | 
-    response_type = OAuth2ResponseType("code") # OAuth2ResponseType |  (optional)
-    redirect_uri = "redirect_uri_example" # str |  (optional)
-    scope = "scope_example" # str |  (optional)
-    state = "state_example" # str |  (optional)
-    code_challenge = "code_challenge_example" # str |  (optional)
-    code_challenge_method = "code_challenge_method_example" # str |  (optional)
-    nonce = "nonce_example" # str |  (optional)
-    prompt = OAuth2Prompt("none") # OAuth2Prompt |  (optional)
+    api_instance = traq.Oauth2Api(api_client)
+    client_id = 'client_id_example' # str | 
+    response_type = traq.OAuth2ResponseType() # OAuth2ResponseType |  (optional)
+    redirect_uri = 'redirect_uri_example' # str |  (optional)
+    scope = 'scope_example' # str |  (optional)
+    state = 'state_example' # str |  (optional)
+    code_challenge = 'code_challenge_example' # str |  (optional)
+    code_challenge_method = 'code_challenge_method_example' # str |  (optional)
+    nonce = 'nonce_example' # str |  (optional)
+    prompt = traq.OAuth2Prompt() # OAuth2Prompt |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # OAuth2 認可エンドポイント
-        api_instance.post_o_auth2_authorize(client_id)
-    except traq.ApiException as e:
-        print("Exception when calling Oauth2Api->post_o_auth2_authorize: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2 認可エンドポイント
         api_instance.post_o_auth2_authorize(client_id, response_type=response_type, redirect_uri=redirect_uri, scope=scope, state=state, code_challenge=code_challenge, code_challenge_method=code_challenge_method, nonce=nonce, prompt=prompt)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->post_o_auth2_authorize: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **client_id** | **str**|  |
- **response_type** | [**OAuth2ResponseType**](OAuth2ResponseType.md)|  | [optional]
- **redirect_uri** | **str**|  | [optional]
- **scope** | **str**|  | [optional]
- **state** | **str**|  | [optional]
- **code_challenge** | **str**|  | [optional]
- **code_challenge_method** | **str**|  | [optional]
- **nonce** | **str**|  | [optional]
- **prompt** | [**OAuth2Prompt**](OAuth2Prompt.md)|  | [optional]
+ **client_id** | **str**|  | 
+ **response_type** | [**OAuth2ResponseType**](OAuth2ResponseType.md)|  | [optional] 
+ **redirect_uri** | **str**|  | [optional] 
+ **scope** | **str**|  | [optional] 
+ **state** | **str**|  | [optional] 
+ **code_challenge** | **str**|  | [optional] 
+ **code_challenge_method** | **str**|  | [optional] 
+ **nonce** | **str**|  | [optional] 
+ **prompt** | [**OAuth2Prompt**](OAuth2Prompt.md)|  | [optional] 
 
 ### Return type
 
@@ -714,13 +703,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -742,12 +730,15 @@ OAuth2 認可承諾
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -759,32 +750,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    submit = "submit_example" # str | 承諾する場合は\\\"approve\\\"
+    api_instance = traq.Oauth2Api(api_client)
+    submit = 'submit_example' # str | 承諾する場合は\\\"approve\\\"
 
-    # example passing only required values which don't have defaults set
     try:
         # OAuth2 認可承諾API
         api_instance.post_o_auth2_authorize_decide(submit)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->post_o_auth2_authorize_decide: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **submit** | **str**| 承諾する場合は\\\&quot;approve\\\&quot; |
+ **submit** | **str**| 承諾する場合は\\\&quot;approve\\\&quot; | 
 
 ### Return type
 
@@ -792,13 +785,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -811,7 +803,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **post_o_auth2_token**
-> OAuth2Token post_o_auth2_token(grant_type)
+> OAuth2Token post_o_auth2_token(grant_type, code=code, redirect_uri=redirect_uri, client_id=client_id, code_verifier=code_verifier, username=username, password=password, scope=scope, refresh_token=refresh_token, client_secret=client_secret)
 
 OAuth2 トークンエンドポイント
 
@@ -820,13 +812,16 @@ OAuth2 トークンエンドポイント
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
-from traq.model.o_auth2_token import OAuth2Token
+from traq.models.o_auth2_token import OAuth2Token
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -838,60 +833,54 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    grant_type = "grant_type_example" # str | 
-    code = "code_example" # str |  (optional)
-    redirect_uri = "redirect_uri_example" # str |  (optional)
-    client_id = "client_id_example" # str |  (optional)
-    code_verifier = "code_verifier_example" # str |  (optional)
-    username = "username_example" # str |  (optional)
-    password = "password_example" # str |  (optional)
-    scope = "scope_example" # str |  (optional)
-    refresh_token = "refresh_token_example" # str |  (optional)
-    client_secret = "client_secret_example" # str |  (optional)
+    api_instance = traq.Oauth2Api(api_client)
+    grant_type = 'grant_type_example' # str | 
+    code = 'code_example' # str |  (optional)
+    redirect_uri = 'redirect_uri_example' # str |  (optional)
+    client_id = 'client_id_example' # str |  (optional)
+    code_verifier = 'code_verifier_example' # str |  (optional)
+    username = 'username_example' # str |  (optional)
+    password = 'password_example' # str |  (optional)
+    scope = 'scope_example' # str |  (optional)
+    refresh_token = 'refresh_token_example' # str |  (optional)
+    client_secret = 'client_secret_example' # str |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # OAuth2 トークンエンドポイント
-        api_response = api_instance.post_o_auth2_token(grant_type)
-        pprint(api_response)
-    except traq.ApiException as e:
-        print("Exception when calling Oauth2Api->post_o_auth2_token: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # OAuth2 トークンエンドポイント
         api_response = api_instance.post_o_auth2_token(grant_type, code=code, redirect_uri=redirect_uri, client_id=client_id, code_verifier=code_verifier, username=username, password=password, scope=scope, refresh_token=refresh_token, client_secret=client_secret)
+        print("The response of Oauth2Api->post_o_auth2_token:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->post_o_auth2_token: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **grant_type** | **str**|  |
- **code** | **str**|  | [optional]
- **redirect_uri** | **str**|  | [optional]
- **client_id** | **str**|  | [optional]
- **code_verifier** | **str**|  | [optional]
- **username** | **str**|  | [optional]
- **password** | **str**|  | [optional]
- **scope** | **str**|  | [optional]
- **refresh_token** | **str**|  | [optional]
- **client_secret** | **str**|  | [optional]
+ **grant_type** | **str**|  | 
+ **code** | **str**|  | [optional] 
+ **redirect_uri** | **str**|  | [optional] 
+ **client_id** | **str**|  | [optional] 
+ **code_verifier** | **str**|  | [optional] 
+ **username** | **str**|  | [optional] 
+ **password** | **str**|  | [optional] 
+ **scope** | **str**|  | [optional] 
+ **refresh_token** | **str**|  | [optional] 
+ **client_secret** | **str**|  | [optional] 
 
 ### Return type
 
@@ -899,13 +888,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -927,12 +915,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -944,32 +935,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    token_id = "tokenId_example" # str | OAuth2トークンUUID
+    api_instance = traq.Oauth2Api(api_client)
+    token_id = 'token_id_example' # str | OAuth2トークンUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # トークンの認可を取り消す
         api_instance.revoke_my_token(token_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->revoke_my_token: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **token_id** | **str**| OAuth2トークンUUID |
+ **token_id** | **str**| OAuth2トークンUUID | 
 
 ### Return type
 
@@ -977,13 +970,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -1004,12 +996,15 @@ OAuth2 トークン無効化エンドポイント
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import oauth2_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1021,32 +1016,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = oauth2_api.Oauth2Api(api_client)
-    token = "token_example" # str | 無効化するOAuth2トークンまたはOAuth2リフレッシュトークン
+    api_instance = traq.Oauth2Api(api_client)
+    token = 'token_example' # str | 無効化するOAuth2トークンまたはOAuth2リフレッシュトークン
 
-    # example passing only required values which don't have defaults set
     try:
         # OAuth2 トークン無効化エンドポイント
         api_instance.revoke_o_auth2_token(token)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling Oauth2Api->revoke_o_auth2_token: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **token** | **str**| 無効化するOAuth2トークンまたはOAuth2リフレッシュトークン |
+ **token** | **str**| 無効化するOAuth2トークンまたはOAuth2リフレッシュトークン | 
 
 ### Return type
 
@@ -1054,13 +1051,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/x-www-form-urlencoded
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

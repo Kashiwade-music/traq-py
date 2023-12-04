@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **get_web_rtc_state**
-> WebRTCUserStates get_web_rtc_state()
+> List[WebRTCUserState] get_web_rtc_state()
 
 WebRTC状態を取得
 
@@ -18,13 +18,16 @@ WebRTC状態を取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webrtc_api
-from traq.model.web_rtc_user_states import WebRTCUserStates
+from traq.models.web_rtc_user_state import WebRTCUserState
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -36,43 +39,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webrtc_api.WebrtcApi(api_client)
+    api_instance = traq.WebrtcApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # WebRTC状態を取得
         api_response = api_instance.get_web_rtc_state()
+        print("The response of WebrtcApi->get_web_rtc_state:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebrtcApi->get_web_rtc_state: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**WebRTCUserStates**](WebRTCUserStates.md)
+[**List[WebRTCUserState]**](WebRTCUserState.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -83,7 +88,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **post_web_rtc_authenticate**
-> WebRTCAuthenticateResult post_web_rtc_authenticate()
+> WebRTCAuthenticateResult post_web_rtc_authenticate(post_web_rtc_authenticate_request=post_web_rtc_authenticate_request)
 
 Skyway用認証API
 
@@ -92,14 +97,17 @@ Skyway WebRTC用の認証API
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webrtc_api
-from traq.model.post_web_rtc_authenticate_request import PostWebRTCAuthenticateRequest
-from traq.model.web_rtc_authenticate_result import WebRTCAuthenticateResult
+from traq.models.post_web_rtc_authenticate_request import PostWebRTCAuthenticateRequest
+from traq.models.web_rtc_authenticate_result import WebRTCAuthenticateResult
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -111,36 +119,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webrtc_api.WebrtcApi(api_client)
-    post_web_rtc_authenticate_request = PostWebRTCAuthenticateRequest(
-        peer_id="peer_id_example",
-    ) # PostWebRTCAuthenticateRequest |  (optional)
+    api_instance = traq.WebrtcApi(api_client)
+    post_web_rtc_authenticate_request = traq.PostWebRTCAuthenticateRequest() # PostWebRTCAuthenticateRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Skyway用認証API
         api_response = api_instance.post_web_rtc_authenticate(post_web_rtc_authenticate_request=post_web_rtc_authenticate_request)
+        print("The response of WebrtcApi->post_web_rtc_authenticate:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebrtcApi->post_web_rtc_authenticate: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_web_rtc_authenticate_request** | [**PostWebRTCAuthenticateRequest**](PostWebRTCAuthenticateRequest.md)|  | [optional]
+ **post_web_rtc_authenticate_request** | [**PostWebRTCAuthenticateRequest**](PostWebRTCAuthenticateRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -148,13 +156,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 

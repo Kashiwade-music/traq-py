@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 
 # **add_user_group_admin**
-> add_user_group_admin(group_id)
+> add_user_group_admin(group_id, post_user_group_admin_request=post_user_group_admin_request)
 
 グループ管理者を追加
 
@@ -29,13 +29,16 @@ Method | HTTP request | Description
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.post_user_group_admin_request import PostUserGroupAdminRequest
+from traq.models.post_user_group_admin_request import PostUserGroupAdminRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -47,44 +50,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    post_user_group_admin_request = PostUserGroupAdminRequest(
-        id="id_example",
-    ) # PostUserGroupAdminRequest |  (optional)
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    post_user_group_admin_request = traq.PostUserGroupAdminRequest() # PostUserGroupAdminRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # グループ管理者を追加
-        api_instance.add_user_group_admin(group_id)
-    except traq.ApiException as e:
-        print("Exception when calling GroupApi->add_user_group_admin: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # グループ管理者を追加
         api_instance.add_user_group_admin(group_id, post_user_group_admin_request=post_user_group_admin_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->add_user_group_admin: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **post_user_group_admin_request** | [**PostUserGroupAdminRequest**](PostUserGroupAdminRequest.md)|  | [optional]
+ **group_id** | **str**| ユーザーグループUUID | 
+ **post_user_group_admin_request** | [**PostUserGroupAdminRequest**](PostUserGroupAdminRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -92,13 +87,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -112,7 +106,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **add_user_group_member**
-> add_user_group_member(group_id)
+> add_user_group_member(group_id, user_group_member=user_group_member)
 
 グループメンバーを追加
 
@@ -121,13 +115,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.user_group_member import UserGroupMember
+from traq.models.user_group_member import UserGroupMember
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -139,45 +136,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    user_group_member = UserGroupMember(
-        id="id_example",
-        role="role_example",
-    ) # UserGroupMember |  (optional)
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    user_group_member = traq.UserGroupMember() # UserGroupMember |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # グループメンバーを追加
-        api_instance.add_user_group_member(group_id)
-    except traq.ApiException as e:
-        print("Exception when calling GroupApi->add_user_group_member: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # グループメンバーを追加
         api_instance.add_user_group_member(group_id, user_group_member=user_group_member)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->add_user_group_member: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **user_group_member** | [**UserGroupMember**](UserGroupMember.md)|  | [optional]
+ **group_id** | **str**| ユーザーグループUUID | 
+ **user_group_member** | [**UserGroupMember**](UserGroupMember.md)|  | [optional] 
 
 ### Return type
 
@@ -185,13 +173,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -214,12 +201,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -231,34 +221,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    file = open('/path/to/file', 'rb') # file_type | アイコン画像(1MBまでのpng, jpeg, gif)
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    file = None # bytearray | アイコン画像(1MBまでのpng, jpeg, gif)
 
-    # example passing only required values which don't have defaults set
     try:
         # ユーザーグループのアイコンを変更
         api_instance.change_user_group_icon(group_id, file)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->change_user_group_icon: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **file** | **file_type**| アイコン画像(1MBまでのpng, jpeg, gif) |
+ **group_id** | **str**| ユーザーグループUUID | 
+ **file** | **bytearray**| アイコン画像(1MBまでのpng, jpeg, gif) | 
 
 ### Return type
 
@@ -266,13 +258,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -286,7 +277,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_user_group**
-> UserGroup create_user_group()
+> UserGroup create_user_group(post_user_group_request=post_user_group_request)
 
 ユーザーグループを作成
 
@@ -295,14 +286,17 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.user_group import UserGroup
-from traq.model.post_user_group_request import PostUserGroupRequest
+from traq.models.post_user_group_request import PostUserGroupRequest
+from traq.models.user_group import UserGroup
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -314,38 +308,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    post_user_group_request = PostUserGroupRequest(
-        name="name_example",
-        description="description_example",
-        type="type_example",
-    ) # PostUserGroupRequest |  (optional)
+    api_instance = traq.GroupApi(api_client)
+    post_user_group_request = traq.PostUserGroupRequest() # PostUserGroupRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # ユーザーグループを作成
         api_response = api_instance.create_user_group(post_user_group_request=post_user_group_request)
+        print("The response of GroupApi->create_user_group:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->create_user_group: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_user_group_request** | [**PostUserGroupRequest**](PostUserGroupRequest.md)|  | [optional]
+ **post_user_group_request** | [**PostUserGroupRequest**](PostUserGroupRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -353,13 +345,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -382,12 +373,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -399,32 +393,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # ユーザーグループを削除
         api_instance.delete_user_group(group_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->delete_user_group: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
 
 ### Return type
 
@@ -432,13 +428,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -451,7 +446,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_user_group**
-> edit_user_group(group_id)
+> edit_user_group(group_id, patch_user_group_request=patch_user_group_request)
 
 ユーザーグループを編集
 
@@ -460,13 +455,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.patch_user_group_request import PatchUserGroupRequest
+from traq.models.patch_user_group_request import PatchUserGroupRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -478,46 +476,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    patch_user_group_request = PatchUserGroupRequest(
-        name="name_example",
-        description="description_example",
-        type="type_example",
-    ) # PatchUserGroupRequest |  (optional)
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    patch_user_group_request = traq.PatchUserGroupRequest() # PatchUserGroupRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # ユーザーグループを編集
-        api_instance.edit_user_group(group_id)
-    except traq.ApiException as e:
-        print("Exception when calling GroupApi->edit_user_group: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # ユーザーグループを編集
         api_instance.edit_user_group(group_id, patch_user_group_request=patch_user_group_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->edit_user_group: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **patch_user_group_request** | [**PatchUserGroupRequest**](PatchUserGroupRequest.md)|  | [optional]
+ **group_id** | **str**| ユーザーグループUUID | 
+ **patch_user_group_request** | [**PatchUserGroupRequest**](PatchUserGroupRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -525,13 +513,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -546,7 +533,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_user_group_member**
-> edit_user_group_member(group_id, user_id)
+> edit_user_group_member(group_id, user_id, patch_group_member_request=patch_group_member_request)
 
 グループメンバーを編集
 
@@ -555,13 +542,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.patch_group_member_request import PatchGroupMemberRequest
+from traq.models.patch_group_member_request import PatchGroupMemberRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -573,46 +563,38 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    user_id = "userId_example" # str | ユーザーUUID
-    patch_group_member_request = PatchGroupMemberRequest(
-        role="role_example",
-    ) # PatchGroupMemberRequest |  (optional)
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    user_id = 'user_id_example' # str | ユーザーUUID
+    patch_group_member_request = traq.PatchGroupMemberRequest() # PatchGroupMemberRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # グループメンバーを編集
-        api_instance.edit_user_group_member(group_id, user_id)
-    except traq.ApiException as e:
-        print("Exception when calling GroupApi->edit_user_group_member: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # グループメンバーを編集
         api_instance.edit_user_group_member(group_id, user_id, patch_group_member_request=patch_group_member_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->edit_user_group_member: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **user_id** | **str**| ユーザーUUID |
- **patch_group_member_request** | [**PatchGroupMemberRequest**](PatchGroupMemberRequest.md)|  | [optional]
+ **group_id** | **str**| ユーザーグループUUID | 
+ **user_id** | **str**| ユーザーUUID | 
+ **patch_group_member_request** | [**PatchGroupMemberRequest**](PatchGroupMemberRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -620,13 +602,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -649,13 +630,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.user_group import UserGroup
+from traq.models.user_group import UserGroup
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -667,33 +651,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # ユーザーグループを取得
         api_response = api_instance.get_user_group(group_id)
+        print("The response of GroupApi->get_user_group:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->get_user_group: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
 
 ### Return type
 
@@ -701,13 +688,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -719,7 +705,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_user_group_admins**
-> [str] get_user_group_admins(group_id)
+> List[str] get_user_group_admins(group_id)
 
 グループ管理者を取得
 
@@ -728,12 +714,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -745,47 +734,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # グループ管理者を取得
         api_response = api_instance.get_user_group_admins(group_id)
+        print("The response of GroupApi->get_user_group_admins:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->get_user_group_admins: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
 
 ### Return type
 
-**[str]**
+**List[str]**
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -797,7 +788,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_user_group_members**
-> [UserGroupMember] get_user_group_members(group_id)
+> List[UserGroupMember] get_user_group_members(group_id)
 
 グループメンバーを取得
 
@@ -806,13 +797,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.user_group_member import UserGroupMember
+from traq.models.user_group_member import UserGroupMember
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -824,47 +818,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # グループメンバーを取得
         api_response = api_instance.get_user_group_members(group_id)
+        print("The response of GroupApi->get_user_group_members:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->get_user_group_members: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
 
 ### Return type
 
-[**[UserGroupMember]**](UserGroupMember.md)
+[**List[UserGroupMember]**](UserGroupMember.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -876,7 +872,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_user_groups**
-> [UserGroup] get_user_groups()
+> List[UserGroup] get_user_groups()
 
 ユーザーグループのリストを取得
 
@@ -885,13 +881,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
-from traq.model.user_group import UserGroup
+from traq.models.user_group import UserGroup
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -903,43 +902,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
+    api_instance = traq.GroupApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # ユーザーグループのリストを取得
         api_response = api_instance.get_user_groups()
+        print("The response of GroupApi->get_user_groups:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->get_user_groups: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[UserGroup]**](UserGroup.md)
+[**List[UserGroup]**](UserGroup.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -959,12 +960,15 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -976,34 +980,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    user_id = "userId_example" # str | ユーザーUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    user_id = 'user_id_example' # str | ユーザーUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # グループ管理者を削除
         api_instance.remove_user_group_admin(group_id, user_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->remove_user_group_admin: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **user_id** | **str**| ユーザーUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
+ **user_id** | **str**| ユーザーUUID | 
 
 ### Return type
 
@@ -1011,13 +1017,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -1040,12 +1045,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import group_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1057,34 +1065,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = group_api.GroupApi(api_client)
-    group_id = "groupId_example" # str | ユーザーグループUUID
-    user_id = "userId_example" # str | ユーザーUUID
+    api_instance = traq.GroupApi(api_client)
+    group_id = 'group_id_example' # str | ユーザーグループUUID
+    user_id = 'user_id_example' # str | ユーザーUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # グループメンバーを削除
         api_instance.remove_user_group_member(group_id, user_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling GroupApi->remove_user_group_member: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **group_id** | **str**| ユーザーグループUUID |
- **user_id** | **str**| ユーザーUUID |
+ **group_id** | **str**| ユーザーグループUUID | 
+ **user_id** | **str**| ユーザーUUID | 
 
 ### Return type
 
@@ -1092,13 +1102,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

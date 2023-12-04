@@ -24,7 +24,7 @@ Method | HTTP request | Description
 
 
 # **add_message_stamp**
-> add_message_stamp(message_id, stamp_id)
+> add_message_stamp(message_id, stamp_id, post_message_stamp_request=post_message_stamp_request)
 
 スタンプを押す
 
@@ -33,13 +33,16 @@ Method | HTTP request | Description
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.post_message_stamp_request import PostMessageStampRequest
+from traq.models.post_message_stamp_request import PostMessageStampRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -51,46 +54,38 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
-    stamp_id = "stampId_example" # str | スタンプUUID
-    post_message_stamp_request = PostMessageStampRequest(
-        count=1,
-    ) # PostMessageStampRequest |  (optional)
+    api_instance = traq.StampApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
+    post_message_stamp_request = traq.PostMessageStampRequest() # PostMessageStampRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # スタンプを押す
-        api_instance.add_message_stamp(message_id, stamp_id)
-    except traq.ApiException as e:
-        print("Exception when calling StampApi->add_message_stamp: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプを押す
         api_instance.add_message_stamp(message_id, stamp_id, post_message_stamp_request=post_message_stamp_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->add_message_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
- **stamp_id** | **str**| スタンプUUID |
- **post_message_stamp_request** | [**PostMessageStampRequest**](PostMessageStampRequest.md)|  | [optional]
+ **message_id** | **str**| メッセージUUID | 
+ **stamp_id** | **str**| スタンプUUID | 
+ **post_message_stamp_request** | [**PostMessageStampRequest**](PostMessageStampRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -98,13 +93,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -126,12 +120,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -143,34 +140,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
-    file = open('/path/to/file', 'rb') # file_type | スタンプ画像(1MBまでのpng, jpeg, gif)
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
+    file = None # bytearray | スタンプ画像(1MBまでのpng, jpeg, gif)
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプ画像を変更
         api_instance.change_stamp_image(stamp_id, file)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->change_stamp_image: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
- **file** | **file_type**| スタンプ画像(1MBまでのpng, jpeg, gif) |
+ **stamp_id** | **str**| スタンプUUID | 
+ **file** | **bytearray**| スタンプ画像(1MBまでのpng, jpeg, gif) | 
 
 ### Return type
 
@@ -178,13 +177,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -207,13 +205,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp import Stamp
+from traq.models.stamp import Stamp
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -225,35 +226,38 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    name = "zBAMDTMv2D2ylmgd10Z3UB6U" # str | スタンプ名
-    file = open('/path/to/file', 'rb') # file_type | スタンプ画像(1MBまでのpng, jpeg, gif)
+    api_instance = traq.StampApi(api_client)
+    name = 'name_example' # str | スタンプ名
+    file = None # bytearray | スタンプ画像(1MBまでのpng, jpeg, gif)
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプを作成
         api_response = api_instance.create_stamp(name, file)
+        print("The response of StampApi->create_stamp:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->create_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **str**| スタンプ名 |
- **file** | **file_type**| スタンプ画像(1MBまでのpng, jpeg, gif) |
+ **name** | **str**| スタンプ名 | 
+ **file** | **bytearray**| スタンプ画像(1MBまでのpng, jpeg, gif) | 
 
 ### Return type
 
@@ -261,13 +265,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -281,7 +284,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_stamp_palette**
-> StampPalette create_stamp_palette()
+> StampPalette create_stamp_palette(post_stamp_palette_request=post_stamp_palette_request)
 
 スタンプパレットを作成
 
@@ -290,14 +293,17 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp_palette import StampPalette
-from traq.model.post_stamp_palette_request import PostStampPaletteRequest
+from traq.models.post_stamp_palette_request import PostStampPaletteRequest
+from traq.models.stamp_palette import StampPalette
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -309,40 +315,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    post_stamp_palette_request = PostStampPaletteRequest(
-        stamps=[
-            "stamps_example",
-        ],
-        name="name_example",
-        description="description_example",
-    ) # PostStampPaletteRequest |  (optional)
+    api_instance = traq.StampApi(api_client)
+    post_stamp_palette_request = traq.PostStampPaletteRequest() # PostStampPaletteRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプパレットを作成
         api_response = api_instance.create_stamp_palette(post_stamp_palette_request=post_stamp_palette_request)
+        print("The response of StampApi->create_stamp_palette:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->create_stamp_palette: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_stamp_palette_request** | [**PostStampPaletteRequest**](PostStampPaletteRequest.md)|  | [optional]
+ **post_stamp_palette_request** | [**PostStampPaletteRequest**](PostStampPaletteRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -350,13 +352,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -377,12 +378,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -394,32 +398,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプを削除
         api_instance.delete_stamp(stamp_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->delete_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
+ **stamp_id** | **str**| スタンプUUID | 
 
 ### Return type
 
@@ -427,13 +433,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -455,12 +460,15 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -472,32 +480,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    palette_id = "paletteId_example" # str | スタンプパレットUUID
+    api_instance = traq.StampApi(api_client)
+    palette_id = 'palette_id_example' # str | スタンプパレットUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプパレットを削除
         api_instance.delete_stamp_palette(palette_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->delete_stamp_palette: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **palette_id** | **str**| スタンプパレットUUID |
+ **palette_id** | **str**| スタンプパレットUUID | 
 
 ### Return type
 
@@ -505,13 +515,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -524,7 +533,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_stamp**
-> edit_stamp(stamp_id)
+> edit_stamp(stamp_id, patch_stamp_request=patch_stamp_request)
 
 スタンプ情報を変更
 
@@ -533,13 +542,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.patch_stamp_request import PatchStampRequest
+from traq.models.patch_stamp_request import PatchStampRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -551,45 +563,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
-    patch_stamp_request = PatchStampRequest(
-        name="zBAMDTMv2D2ylmgd10Z3UB6U",
-        creator_id="creator_id_example",
-    ) # PatchStampRequest |  (optional)
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
+    patch_stamp_request = traq.PatchStampRequest() # PatchStampRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # スタンプ情報を変更
-        api_instance.edit_stamp(stamp_id)
-    except traq.ApiException as e:
-        print("Exception when calling StampApi->edit_stamp: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプ情報を変更
         api_instance.edit_stamp(stamp_id, patch_stamp_request=patch_stamp_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->edit_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
- **patch_stamp_request** | [**PatchStampRequest**](PatchStampRequest.md)|  | [optional]
+ **stamp_id** | **str**| スタンプUUID | 
+ **patch_stamp_request** | [**PatchStampRequest**](PatchStampRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -597,13 +600,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -618,7 +620,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_stamp_palette**
-> edit_stamp_palette(palette_id)
+> edit_stamp_palette(palette_id, patch_stamp_palette_request=patch_stamp_palette_request)
 
 スタンプパレットを編集
 
@@ -627,13 +629,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.patch_stamp_palette_request import PatchStampPaletteRequest
+from traq.models.patch_stamp_palette_request import PatchStampPaletteRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -645,48 +650,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    palette_id = "paletteId_example" # str | スタンプパレットUUID
-    patch_stamp_palette_request = PatchStampPaletteRequest(
-        name="name_example",
-        description="description_example",
-        stamps=[
-            "stamps_example",
-        ],
-    ) # PatchStampPaletteRequest |  (optional)
+    api_instance = traq.StampApi(api_client)
+    palette_id = 'palette_id_example' # str | スタンプパレットUUID
+    patch_stamp_palette_request = traq.PatchStampPaletteRequest() # PatchStampPaletteRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # スタンプパレットを編集
-        api_instance.edit_stamp_palette(palette_id)
-    except traq.ApiException as e:
-        print("Exception when calling StampApi->edit_stamp_palette: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプパレットを編集
         api_instance.edit_stamp_palette(palette_id, patch_stamp_palette_request=patch_stamp_palette_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->edit_stamp_palette: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **palette_id** | **str**| スタンプパレットUUID |
- **patch_stamp_palette_request** | [**PatchStampPaletteRequest**](PatchStampPaletteRequest.md)|  | [optional]
+ **palette_id** | **str**| スタンプパレットUUID | 
+ **patch_stamp_palette_request** | [**PatchStampPaletteRequest**](PatchStampPaletteRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -694,13 +687,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -714,7 +706,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_message_stamps**
-> [MessageStamp] get_message_stamps(message_id)
+> List[MessageStamp] get_message_stamps(message_id)
 
 メッセージのスタンプリストを取得
 
@@ -723,13 +715,16 @@ void (empty response body)
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.message_stamp import MessageStamp
+from traq.models.message_stamp import MessageStamp
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -741,47 +736,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
+    api_instance = traq.StampApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # メッセージのスタンプリストを取得
         api_response = api_instance.get_message_stamps(message_id)
+        print("The response of StampApi->get_message_stamps:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_message_stamps: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
+ **message_id** | **str**| メッセージUUID | 
 
 ### Return type
 
-[**[MessageStamp]**](MessageStamp.md)
+[**List[MessageStamp]**](MessageStamp.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -793,7 +790,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_my_stamp_history**
-> [StampHistoryEntry] get_my_stamp_history()
+> List[StampHistoryEntry] get_my_stamp_history(limit=limit)
 
 スタンプ履歴を取得
 
@@ -802,13 +799,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp_history_entry import StampHistoryEntry
+from traq.models.stamp_history_entry import StampHistoryEntry
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -820,48 +820,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    limit = 100 # int | 件数 (optional) if omitted the server will use the default value of 100
+    api_instance = traq.StampApi(api_client)
+    limit = 100 # int | 件数 (optional) (default to 100)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプ履歴を取得
         api_response = api_instance.get_my_stamp_history(limit=limit)
+        print("The response of StampApi->get_my_stamp_history:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_my_stamp_history: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **limit** | **int**| 件数 | [optional] if omitted the server will use the default value of 100
+ **limit** | **int**| 件数 | [optional] [default to 100]
 
 ### Return type
 
-[**[StampHistoryEntry]**](StampHistoryEntry.md)
+[**List[StampHistoryEntry]**](StampHistoryEntry.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -881,13 +882,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp import Stamp
+from traq.models.stamp import Stamp
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -899,33 +903,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプ情報を取得
         api_response = api_instance.get_stamp(stamp_id)
+        print("The response of StampApi->get_stamp:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
+ **stamp_id** | **str**| スタンプUUID | 
 
 ### Return type
 
@@ -933,13 +940,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -951,7 +957,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_stamp_image**
-> file_type get_stamp_image(stamp_id)
+> bytearray get_stamp_image(stamp_id)
 
 スタンプ画像を取得
 
@@ -960,12 +966,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -977,47 +986,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプ画像を取得
         api_response = api_instance.get_stamp_image(stamp_id)
+        print("The response of StampApi->get_stamp_image:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamp_image: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
+ **stamp_id** | **str**| スタンプUUID | 
 
 ### Return type
 
-**file_type**
+**bytearray**
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: image/png, image/gif, image/jpeg
-
 
 ### HTTP response details
 
@@ -1038,13 +1049,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp_palette import StampPalette
+from traq.models.stamp_palette import StampPalette
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1056,33 +1070,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    palette_id = "paletteId_example" # str | スタンプパレットUUID
+    api_instance = traq.StampApi(api_client)
+    palette_id = 'palette_id_example' # str | スタンプパレットUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプパレットを取得
         api_response = api_instance.get_stamp_palette(palette_id)
+        print("The response of StampApi->get_stamp_palette:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamp_palette: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **palette_id** | **str**| スタンプパレットUUID |
+ **palette_id** | **str**| スタンプパレットUUID | 
 
 ### Return type
 
@@ -1090,13 +1107,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -1108,7 +1124,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_stamp_palettes**
-> [StampPalette] get_stamp_palettes()
+> List[StampPalette] get_stamp_palettes()
 
 スタンプパレットのリストを取得
 
@@ -1117,13 +1133,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp_palette import StampPalette
+from traq.models.stamp_palette import StampPalette
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1135,43 +1154,45 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
+    api_instance = traq.StampApi(api_client)
 
-    # example, this endpoint has no required or optional parameters
     try:
         # スタンプパレットのリストを取得
         api_response = api_instance.get_stamp_palettes()
+        print("The response of StampApi->get_stamp_palettes:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamp_palettes: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
 
-[**[StampPalette]**](StampPalette.md)
+[**List[StampPalette]**](StampPalette.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -1191,13 +1212,16 @@ This endpoint does not need any parameter.
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp_stats import StampStats
+from traq.models.stamp_stats import StampStats
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1209,33 +1233,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    stamp_id = "stampId_example" # str | スタンプUUID
+    api_instance = traq.StampApi(api_client)
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプ統計情報を取得
         api_response = api_instance.get_stamp_stats(stamp_id)
+        print("The response of StampApi->get_stamp_stats:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamp_stats: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **stamp_id** | **str**| スタンプUUID |
+ **stamp_id** | **str**| スタンプUUID | 
 
 ### Return type
 
@@ -1243,13 +1270,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -1261,7 +1287,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_stamps**
-> [Stamp] get_stamps()
+> List[Stamp] get_stamps(include_unicode=include_unicode, type=type)
 
 スタンプリストを取得
 
@@ -1270,13 +1296,16 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
-from traq.model.stamp import Stamp
+from traq.models.stamp import Stamp
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1288,48 +1317,51 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    include_unicode = True # bool | Unicode絵文字を含ませるかどうか (optional) if omitted the server will use the default value of True
+    api_instance = traq.StampApi(api_client)
+    include_unicode = True # bool | Unicode絵文字を含ませるかどうか Deprecated: typeクエリを指定しなければ全てのスタンプを取得できるため、そちらを利用してください  (optional) (default to True)
+    type = 'type_example' # str | 取得するスタンプの種類 (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # スタンプリストを取得
-        api_response = api_instance.get_stamps(include_unicode=include_unicode)
+        api_response = api_instance.get_stamps(include_unicode=include_unicode, type=type)
+        print("The response of StampApi->get_stamps:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->get_stamps: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **include_unicode** | **bool**| Unicode絵文字を含ませるかどうか | [optional] if omitted the server will use the default value of True
+ **include_unicode** | **bool**| Unicode絵文字を含ませるかどうか Deprecated: typeクエリを指定しなければ全てのスタンプを取得できるため、そちらを利用してください  | [optional] [default to True]
+ **type** | **str**| 取得するスタンプの種類 | [optional] 
 
 ### Return type
 
-[**[Stamp]**](Stamp.md)
+[**List[Stamp]**](Stamp.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -1349,12 +1381,15 @@ Name | Type | Description  | Notes
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import stamp_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -1366,34 +1401,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = stamp_api.StampApi(api_client)
-    message_id = "messageId_example" # str | メッセージUUID
-    stamp_id = "stampId_example" # str | スタンプUUID
+    api_instance = traq.StampApi(api_client)
+    message_id = 'message_id_example' # str | メッセージUUID
+    stamp_id = 'stamp_id_example' # str | スタンプUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # スタンプを消す
         api_instance.remove_message_stamp(message_id, stamp_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling StampApi->remove_message_stamp: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message_id** | **str**| メッセージUUID |
- **stamp_id** | **str**| スタンプUUID |
+ **message_id** | **str**| メッセージUUID | 
+ **stamp_id** | **str**| スタンプUUID | 
 
 ### Return type
 
@@ -1401,13 +1438,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

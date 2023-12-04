@@ -25,12 +25,15 @@ Webhookのアイコンを変更
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -42,34 +45,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
-    file = open('/path/to/file', 'rb') # file_type | アイコン画像(1MBまでのpng, jpeg, gif)
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
+    file = None # bytearray | アイコン画像(1MBまでのpng, jpeg, gif)
 
-    # example passing only required values which don't have defaults set
     try:
         # Webhookのアイコンを変更
         api_instance.change_webhook_icon(webhook_id, file)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->change_webhook_icon: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
- **file** | **file_type**| アイコン画像(1MBまでのpng, jpeg, gif) |
+ **webhook_id** | **str**| WebhookUUID | 
+ **file** | **bytearray**| アイコン画像(1MBまでのpng, jpeg, gif) | 
 
 ### Return type
 
@@ -77,13 +82,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: multipart/form-data
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -97,7 +101,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **create_webhook**
-> Webhook create_webhook()
+> Webhook create_webhook(post_webhook_request=post_webhook_request)
 
 Webhookを新規作成
 
@@ -106,14 +110,17 @@ Webhookを新規作成します。 `secret`が空文字の場合、insecureウ�
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
-from traq.model.webhook import Webhook
-from traq.model.post_webhook_request import PostWebhookRequest
+from traq.models.post_webhook_request import PostWebhookRequest
+from traq.models.webhook import Webhook
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -125,39 +132,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    post_webhook_request = PostWebhookRequest(
-        name="name_example",
-        description="description_example",
-        channel_id="channel_id_example",
-        secret="secret_example",
-    ) # PostWebhookRequest |  (optional)
+    api_instance = traq.WebhookApi(api_client)
+    post_webhook_request = traq.PostWebhookRequest() # PostWebhookRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Webhookを新規作成
         api_response = api_instance.create_webhook(post_webhook_request=post_webhook_request)
+        print("The response of WebhookApi->create_webhook:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->create_webhook: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **post_webhook_request** | [**PostWebhookRequest**](PostWebhookRequest.md)|  | [optional]
+ **post_webhook_request** | [**PostWebhookRequest**](PostWebhookRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -165,13 +169,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -192,12 +195,15 @@ Webhookを削除
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -209,32 +215,34 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # Webhookを削除
         api_instance.delete_webhook(webhook_id)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->delete_webhook: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
+ **webhook_id** | **str**| WebhookUUID | 
 
 ### Return type
 
@@ -242,13 +250,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -260,7 +267,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **edit_webhook**
-> edit_webhook(webhook_id)
+> edit_webhook(webhook_id, patch_webhook_request=patch_webhook_request)
 
 Webhook情報を変更
 
@@ -269,13 +276,16 @@ Webhook情報を変更
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
-from traq.model.patch_webhook_request import PatchWebhookRequest
+from traq.models.patch_webhook_request import PatchWebhookRequest
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -287,48 +297,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
-    patch_webhook_request = PatchWebhookRequest(
-        name="name_example",
-        description="description_example",
-        channel_id="channel_id_example",
-        secret="secret_example",
-        owner_id="owner_id_example",
-    ) # PatchWebhookRequest |  (optional)
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
+    patch_webhook_request = traq.PatchWebhookRequest() # PatchWebhookRequest |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Webhook情報を変更
-        api_instance.edit_webhook(webhook_id)
-    except traq.ApiException as e:
-        print("Exception when calling WebhookApi->edit_webhook: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Webhook情報を変更
         api_instance.edit_webhook(webhook_id, patch_webhook_request=patch_webhook_request)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->edit_webhook: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
- **patch_webhook_request** | [**PatchWebhookRequest**](PatchWebhookRequest.md)|  | [optional]
+ **webhook_id** | **str**| WebhookUUID | 
+ **patch_webhook_request** | [**PatchWebhookRequest**](PatchWebhookRequest.md)|  | [optional] 
 
 ### Return type
 
@@ -336,13 +334,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json
  - **Accept**: Not defined
-
 
 ### HTTP response details
 
@@ -364,13 +361,16 @@ Webhook情報を取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
-from traq.model.webhook import Webhook
+from traq.models.webhook import Webhook
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -382,33 +382,36 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # Webhook情報を取得
         api_response = api_instance.get_webhook(webhook_id)
+        print("The response of WebhookApi->get_webhook:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->get_webhook: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
+ **webhook_id** | **str**| WebhookUUID | 
 
 ### Return type
 
@@ -416,13 +419,12 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -434,7 +436,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_webhook_icon**
-> file_type get_webhook_icon(webhook_id)
+> bytearray get_webhook_icon(webhook_id)
 
 Webhookのアイコンを取得
 
@@ -443,12 +445,15 @@ Webhookのアイコンを取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -460,47 +465,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
 
-    # example passing only required values which don't have defaults set
     try:
         # Webhookのアイコンを取得
         api_response = api_instance.get_webhook_icon(webhook_id)
+        print("The response of WebhookApi->get_webhook_icon:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->get_webhook_icon: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
+ **webhook_id** | **str**| WebhookUUID | 
 
 ### Return type
 
-**file_type**
+**bytearray**
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: image/jpeg, image/gif, image/png
-
 
 ### HTTP response details
 
@@ -512,7 +519,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_webhook_messages**
-> [Message] get_webhook_messages(webhook_id)
+> List[Message] get_webhook_messages(webhook_id, limit=limit, offset=offset, since=since, until=until, inclusive=inclusive, order=order)
 
 Webhookの投稿メッセージのリストを取得
 
@@ -521,13 +528,16 @@ Webhookの投稿メッセージのリストを取得
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
-from traq.model.message import Message
+from traq.models.message import Message
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -539,68 +549,61 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
     limit = 50 # int | 取得する件数 (optional)
-    offset = 150 # int | 取得するオフセット (optional) if omitted the server will use the default value of 0
-    since = dateutil_parser('2016-10-12T11:00:00.000000Z') # datetime | 取得する時間範囲の開始日時 (optional) if omitted the server will use the default value of dateutil_parser('0000-01-01T00:00:00Z')
-    until = dateutil_parser('2016-10-12T11:00:00.0000000Z') # datetime | 取得する時間範囲の終了日時 (optional)
-    inclusive = False # bool | 範囲の端を含めるかどうか (optional) if omitted the server will use the default value of False
-    order = "desc" # str | 昇順か降順か (optional) if omitted the server will use the default value of "desc"
+    offset = 0 # int | 取得するオフセット (optional) (default to 0)
+    since = '2016-10-12T11:00:00.000000Z' # datetime | 取得する時間範囲の開始日時 (optional)
+    until = '2016-10-12T11:00:00.0000000Z' # datetime | 取得する時間範囲の終了日時 (optional)
+    inclusive = False # bool | 範囲の端を含めるかどうか (optional) (default to False)
+    order = 'desc' # str | 昇順か降順か (optional) (default to 'desc')
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Webhookの投稿メッセージのリストを取得
-        api_response = api_instance.get_webhook_messages(webhook_id)
-        pprint(api_response)
-    except traq.ApiException as e:
-        print("Exception when calling WebhookApi->get_webhook_messages: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Webhookの投稿メッセージのリストを取得
         api_response = api_instance.get_webhook_messages(webhook_id, limit=limit, offset=offset, since=since, until=until, inclusive=inclusive, order=order)
+        print("The response of WebhookApi->get_webhook_messages:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->get_webhook_messages: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
- **limit** | **int**| 取得する件数 | [optional]
- **offset** | **int**| 取得するオフセット | [optional] if omitted the server will use the default value of 0
- **since** | **datetime**| 取得する時間範囲の開始日時 | [optional] if omitted the server will use the default value of dateutil_parser('0000-01-01T00:00:00Z')
- **until** | **datetime**| 取得する時間範囲の終了日時 | [optional]
- **inclusive** | **bool**| 範囲の端を含めるかどうか | [optional] if omitted the server will use the default value of False
- **order** | **str**| 昇順か降順か | [optional] if omitted the server will use the default value of "desc"
+ **webhook_id** | **str**| WebhookUUID | 
+ **limit** | **int**| 取得する件数 | [optional] 
+ **offset** | **int**| 取得するオフセット | [optional] [default to 0]
+ **since** | **datetime**| 取得する時間範囲の開始日時 | [optional] 
+ **until** | **datetime**| 取得する時間範囲の終了日時 | [optional] 
+ **inclusive** | **bool**| 範囲の端を含めるかどうか | [optional] [default to False]
+ **order** | **str**| 昇順か降順か | [optional] [default to &#39;desc&#39;]
 
 ### Return type
 
-[**[Message]**](Message.md)
+[**List[Message]**](Message.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -613,7 +616,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_webhooks**
-> [Webhook] get_webhooks()
+> List[Webhook] get_webhooks(all=all)
 
 Webhook情報のリストを取得します
 
@@ -622,13 +625,16 @@ Webhookのリストを取得します。 allがtrueで無い場合は、自分�
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
-from traq.model.webhook import Webhook
+from traq.models.webhook import Webhook
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -640,48 +646,49 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    all = False # bool | 全てのWebhookを取得します。権限が必要です。 (optional) if omitted the server will use the default value of False
+    api_instance = traq.WebhookApi(api_client)
+    all = False # bool | 全てのWebhookを取得します。権限が必要です。 (optional) (default to False)
 
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Webhook情報のリストを取得します
         api_response = api_instance.get_webhooks(all=all)
+        print("The response of WebhookApi->get_webhooks:\n")
         pprint(api_response)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->get_webhooks: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **all** | **bool**| 全てのWebhookを取得します。権限が必要です。 | [optional] if omitted the server will use the default value of False
+ **all** | **bool**| 全てのWebhookを取得します。権限が必要です。 | [optional] [default to False]
 
 ### Return type
 
-[**[Webhook]**](Webhook.md)
+[**List[Webhook]**](Webhook.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
  - **Accept**: application/json
-
 
 ### HTTP response details
 
@@ -692,7 +699,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **post_webhook**
-> post_webhook(webhook_id)
+> post_webhook(webhook_id, x_traq_signature=x_traq_signature, x_traq_channel_id=x_traq_channel_id, embed=embed, body=body)
 
 Webhookを送信
 
@@ -701,12 +708,15 @@ Webhookにメッセージを投稿します。 secureなウェブフックに対
 ### Example
 
 * OAuth Authentication (OAuth2):
+* Bearer Authentication (bearerAuth):
 
 ```python
 import time
+import os
 import traq
-from traq.api import webhook_api
+from traq.rest import ApiException
 from pprint import pprint
+
 # Defining the host is optional and defaults to https://q.trap.jp/api/v3
 # See configuration.py for a list of all supported configuration parameters.
 configuration = traq.Configuration(
@@ -718,48 +728,42 @@ configuration = traq.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure OAuth2 access token for authorization: OAuth2
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Configure Bearer authorization: bearerAuth
 configuration = traq.Configuration(
-    host = "https://q.trap.jp/api/v3"
+    access_token = os.environ["BEARER_TOKEN"]
 )
-configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # Enter a context with an instance of the API client
 with traq.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = webhook_api.WebhookApi(api_client)
-    webhook_id = "webhookId_example" # str | WebhookUUID
-    x_traq_signature = "X-TRAQ-Signature_example" # str | リクエストボディシグネチャ(Secretが設定されている場合は必須) (optional)
-    x_traq_channel_id = "X-TRAQ-Channel-Id_example" # str | 投稿先のチャンネルID(変更する場合) (optional)
-    embed = 0 # int | メンション・チャンネルリンクを自動埋め込みする場合に1を指定する (optional) if omitted the server will use the default value of 0
-    body = "body_example" # str |  (optional)
+    api_instance = traq.WebhookApi(api_client)
+    webhook_id = 'webhook_id_example' # str | WebhookUUID
+    x_traq_signature = 'x_traq_signature_example' # str | リクエストボディシグネチャ(Secretが設定されている場合は必須) (optional)
+    x_traq_channel_id = 'x_traq_channel_id_example' # str | 投稿先のチャンネルID(変更する場合) (optional)
+    embed = 0 # int | メンション・チャンネルリンクを自動埋め込みする場合に1を指定する (optional) (default to 0)
+    body = 'body_example' # str |  (optional)
 
-    # example passing only required values which don't have defaults set
-    try:
-        # Webhookを送信
-        api_instance.post_webhook(webhook_id)
-    except traq.ApiException as e:
-        print("Exception when calling WebhookApi->post_webhook: %s\n" % e)
-
-    # example passing only required values which don't have defaults set
-    # and optional values
     try:
         # Webhookを送信
         api_instance.post_webhook(webhook_id, x_traq_signature=x_traq_signature, x_traq_channel_id=x_traq_channel_id, embed=embed, body=body)
-    except traq.ApiException as e:
+    except Exception as e:
         print("Exception when calling WebhookApi->post_webhook: %s\n" % e)
 ```
 
 
+
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **webhook_id** | **str**| WebhookUUID |
- **x_traq_signature** | **str**| リクエストボディシグネチャ(Secretが設定されている場合は必須) | [optional]
- **x_traq_channel_id** | **str**| 投稿先のチャンネルID(変更する場合) | [optional]
- **embed** | **int**| メンション・チャンネルリンクを自動埋め込みする場合に1を指定する | [optional] if omitted the server will use the default value of 0
- **body** | **str**|  | [optional]
+ **webhook_id** | **str**| WebhookUUID | 
+ **x_traq_signature** | **str**| リクエストボディシグネチャ(Secretが設定されている場合は必須) | [optional] 
+ **x_traq_channel_id** | **str**| 投稿先のチャンネルID(変更する場合) | [optional] 
+ **embed** | **int**| メンション・チャンネルリンクを自動埋め込みする場合に1を指定する | [optional] [default to 0]
+ **body** | **str**|  | [optional] 
 
 ### Return type
 
@@ -767,13 +771,12 @@ void (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2)
+[OAuth2](../README.md#OAuth2), [bearerAuth](../README.md#bearerAuth)
 
 ### HTTP request headers
 
  - **Content-Type**: text/plain
  - **Accept**: Not defined
-
 
 ### HTTP response details
 

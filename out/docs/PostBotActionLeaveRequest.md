@@ -3,11 +3,28 @@
 BOTチャンネル退出リクエスト
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **channel_id** | **str** | チャンネルUUID | 
-**any string name** | **bool, date, datetime, dict, float, int, list, str, none_type** | any string name can be used but the value must be the correct type | [optional]
 
+## Example
+
+```python
+from traq.models.post_bot_action_leave_request import PostBotActionLeaveRequest
+
+# TODO update the JSON string below
+json = "{}"
+# create an instance of PostBotActionLeaveRequest from a JSON string
+post_bot_action_leave_request_instance = PostBotActionLeaveRequest.from_json(json)
+# print the JSON string representation of the object
+print PostBotActionLeaveRequest.to_json()
+
+# convert the object into a dict
+post_bot_action_leave_request_dict = post_bot_action_leave_request_instance.to_dict()
+# create an instance of PostBotActionLeaveRequest from a dict
+post_bot_action_leave_request_form_dict = post_bot_action_leave_request.from_dict(post_bot_action_leave_request_dict)
+```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
 
